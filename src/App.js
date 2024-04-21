@@ -19,14 +19,14 @@ function App() {
           path: "/",
           element: countrys.displayName? <Index /> : <Login />, // Render Index if countrys data exists, otherwise render Login
         },
-        // {
-        //   path: "/Signup",
-        //   element: <Signup />,
-        // },
-        // {
-        //   path: "/Login",
-        //   element: <Login />,
-        // },
+        {
+          path: "/Signup",
+          element: <Signup />,
+        },
+        {
+          path: "/Login",
+          element: <Login />,
+        },
       ],
     },
   ]);
