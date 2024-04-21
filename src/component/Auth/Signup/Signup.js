@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import {Link} from 'react-router-dom'
 
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-
+import { GetCountrys, GetState, setAqiData,userdetails } from "../../../redux/size/Location-Action";
 import InputControl from "../InputControl/InputControl";
 import { auth } from "../firebase";
-
+import { useSelector, useDispatch } from "react-redux";
 
 import styles from "./Signup.module.css";
 
@@ -29,6 +29,7 @@ function Signup() {
     setSubmitButtonDisabled(true);
     createUserWithEmailAndPassword(auth, values.email, values.pass)
       .then(async (res) => {
+        dispatch(userdetails(res.user ))
         setSubmitButtonDisabled(false);
         const user = res.user;
         await updateProfile(user, {

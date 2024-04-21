@@ -20,7 +20,7 @@ function Header() {
 
     useEffect(() => {
         dispatch(GetCountrys());
-    }, []);
+    }, [username]);
 
     const handleCountryChange = async (event) => {
         const country = event.target.value;
