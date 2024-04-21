@@ -8,7 +8,7 @@ import "./App.css"
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userDetails = useSelector((state) => state.location.userdetails);
-console.log(userDetails,"userDetailsuserDetails")
+
   useEffect(() => {
     if (Object.keys(userDetails).length>0) {
       setIsLoggedIn(true);

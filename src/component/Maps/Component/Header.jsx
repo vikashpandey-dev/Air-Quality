@@ -21,7 +21,7 @@ function Header() {
 
     useEffect(() => {
         dispatch(GetCountrys());
-    }, [username]);
+    }, []);
 
     const handleCountryChange = async (event) => {
         const country = event.target.value;
@@ -97,13 +97,15 @@ function Header() {
             console.error('Error fetching data:', error.message);
         }
     }
-
+const hanloaddata=async()=>{
+    await dispatch(GetCountrys());
+}
     return (
         
         <div className="container mx-auto py-4">
         <ToastContainer />
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-semibold">Choose Your Location</h3>
+          <h3 className="text-xl font-semibold" onClick={hanloaddata}>Choose Your Location</h3>
           <h3>User Name: {username.displayName}</h3>
         </div>
         <div className="flex flex-wrap justify-between mb-4">
