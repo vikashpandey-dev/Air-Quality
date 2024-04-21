@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { GetCountrys, GetState, setAqiData } from "../../../redux/size/Location-Action";
+import { GetCountrys, GetState, setAqiData } from "../../../redux/Location/Location-Action";
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

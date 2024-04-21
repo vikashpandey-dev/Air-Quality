@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import {Link} from 'react-router-dom'
+import {NavLink,Link,useNavigate } from 'react-router-dom'
 
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { GetCountrys, GetState, setAqiData,userdetails } from "../../../redux/size/Location-Action";
+import { GetCountrys, GetState, setAqiData,userdetails } from "../../../redux/Location/Location-Action";
 import InputControl from "../InputControl/InputControl";
 import { auth } from "../firebase";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +10,8 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from "./Signup.module.css";
 
 function Signup() {
-  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -30,12 +31,13 @@ function Signup() {
     createUserWithEmailAndPassword(auth, values.email, values.pass)
       .then(async (res) => {
         dispatch(userdetails(res.user ))
+        navigate("/");
         setSubmitButtonDisabled(false);
         const user = res.user;
         await updateProfile(user, {
           displayName: values.name,
         });
-        window.location.href='/'
+      
       })
       .catch((err) => {
         setSubmitButtonDisabled(false);

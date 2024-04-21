@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 // import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import {Link} from 'react-router-dom'
-import { GetCountrys, GetState, setAqiData,userdetails } from "../../../redux/size/Location-Action";
+import {Link,useNavigate} from 'react-router-dom'
+import { GetCountrys, GetState, setAqiData,userdetails } from "../../../redux/Location/Location-Action";
 import InputControl from "../InputControl/InputControl";
 import { useSelector, useDispatch } from "react-redux";
 import { auth } from "../firebase";
 import styles from "./Login.module.css";
 // import { useNavigate } from "react-router-dom";
 function Login() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [values, setValues] = useState({
     email: "",
@@ -29,7 +30,8 @@ function Login() {
       .then(async (res) => {
      dispatch(userdetails(res.user ))
         setSubmitButtonDisabled(false);
-        // window.location.href='/'
+        alert("Sdsd")
+        navigate("/");
       })
       .catch((err) => {
         setSubmitButtonDisabled(false);
