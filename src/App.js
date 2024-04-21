@@ -4,13 +4,13 @@ import Index from './component/Index';
 import Signup from './component/Auth/Signup/Signup';
 import Login from './component/Auth/Login/Login';
 import { useSelector } from 'react-redux';
-
+import "./App.css"
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userDetails = useSelector((state) => state.location.userdetails);
-
+console.log(userDetails,"userDetailsuserDetails")
   useEffect(() => {
-    if (userDetails) {
+    if (Object.keys(userDetails).length>0) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
