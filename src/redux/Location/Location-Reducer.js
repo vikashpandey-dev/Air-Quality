@@ -1,3 +1,4 @@
+import { createStore } from 'redux';
 const initialState = {
   state: [],
   country: [],
@@ -32,6 +33,18 @@ const LOCATION_REDUCER = (state = initialState, action) => {
     default:
       return state;
   }
+  
 };
+const savedState = JSON.parse(localStorage.getItem("reduxState"));
+const store = savedState
+  ? createStore(
+      LOCATION_REDUCER,
+      savedState
+    )
+  : createStore(LOCATION_REDUCER);
 
+// Subscribe to store changes and save state to browser storage
+store.subscribe(() => {
+  localStorage.setItem("reduxState", JSON.stringify(store.getState()));
+});
 export default LOCATION_REDUCER;

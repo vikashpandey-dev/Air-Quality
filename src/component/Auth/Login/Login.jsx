@@ -30,8 +30,7 @@ function Login() {
       .then(async (res) => {
      dispatch(userdetails(res.user ))
         setSubmitButtonDisabled(false);
-        alert("Sdsd")
-        navigate("/");
+        navigate("/")
       })
       .catch((err) => {
         setSubmitButtonDisabled(false);

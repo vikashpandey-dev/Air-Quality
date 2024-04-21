@@ -31,7 +31,9 @@ function Signup() {
     createUserWithEmailAndPassword(auth, values.email, values.pass)
       .then(async (res) => {
         dispatch(userdetails(res.user ))
-        navigate("/");
+        navigate("/")
+
+
         setSubmitButtonDisabled(false);
         const user = res.user;
         await updateProfile(user, {

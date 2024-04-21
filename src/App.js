@@ -1,42 +1,30 @@
-import React, { useEffect } from 'react';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Index from './component/Index';
 import Signup from './component/Auth/Signup/Signup';
 import Login from './component/Auth/Login/Login';
-import { useSelector, useDispatch } from "react-redux";
-import "./App.css"
+import { useSelector } from 'react-redux';
+
 function App() {
-  const countrys = useSelector((state) => state.location.userdetails); 
-  console.log(countrys.displayName,"adasdasdasd")
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      children: [
-        {
-          path: "/",
-          element: countrys.displayName? <Index /> : <Login />, // Render Index if countrys data exists, otherwise render Login
-        },
-        {
-          path: "/Signup",
-          element: <Signup />,
-        },
-        {
-          path: "/Login",
-          element: <Login />,
-        },
-      ],
-    },
-  ]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userDetails = useSelector((state) => state.location.userdetails);
+
+  useEffect(() => {
+    if (userDetails) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [userDetails]);
 
   return (
-    <>
-      <div>
-        <RouterProvider router={router} />
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={isLoggedIn ? <Index /> : <Login />} />
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
