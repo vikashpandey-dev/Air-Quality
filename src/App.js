@@ -1,36 +1,41 @@
-import "./App.css";
-import React, { useEffect, useState } from "react";
-import "./index.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-import Pages from "./pages/pages";
-import RegisterForm from "./component/RegisterForm";
-import Login from "./component/Login";
+import React, { useEffect } from 'react';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Index from './component/Index';
+import Signup from './component/Auth/Signup/Signup';
+import Login from './component/Auth/Login/Login';
 import { useSelector, useDispatch } from "react-redux";
-import ChatUI from "./component/ChatUI";
+import "./App.css"
 function App() {
-  const loginuser = useSelector((state) => state.auth_reducer.toggle);
-  const checkregister = useSelector(
-    (state) => state.auth_reducer.loginUser
-  );
-  console.log(checkregister,"checkregistercheckregister")
-  const checktoken = localStorage.getItem("token");
-  useEffect(() => {}, [loginuser, checkregister, checktoken]);
+  const countrys = useSelector((state) => state.location.userdetails); 
+  console.log(countrys.displayName,"adasdasdasd")
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      children: [
+        {
+          path: "/",
+          element: countrys.displayName? <Index /> : <Login />, // Render Index if countrys data exists, otherwise render Login
+        },
+        // {
+        //   path: "/Signup",
+        //   element: <Signup />,
+        // },
+        // {
+        //   path: "/Login",
+        //   element: <Login />,
+        // },
+      ],
+    },
+  ]);
+
   return (
     <>
-      <div>{loginuser == true ? <Login /> : null}</div>
-      {console.log(checkregister,"checkregistercheckregister")}
-      {checkregister._id ? (
-        <div>
-          <Pages />
-        </div>
-      ) : (
-        <div>{loginuser == false ? <RegisterForm /> : null}</div>
-      )}
-      {/* <ChatUI/> */}
+      <div>
+        <RouterProvider router={router} />
+      </div>
     </>
   );
 }

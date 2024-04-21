@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Map from "./Map"
+import { useSelector, useDispatch } from "react-redux";
 
-import "./App.css"
-import Message from "../Message"
 function Mapprop() {
+  const [aqidata,setaqidata]=useState([])
+  const myaqidata = useSelector((state) => state.location.AqiData);
+
+console.log(aqidata,"myaqidatamyaqidata")
+
   const latitude = 25.44478;
   const longitude = 81.84322;
-  let data = [{
+  let data = {
     "status": "success",
     "data": {
       "city": "Allahabad",
@@ -38,18 +42,13 @@ function Mapprop() {
         }
       }
     }
-  }]
+  }
   return (
     <>
-      <div style={{ width: "90%", height: "90%" }}>
-        {data.map((records, i) => {
-          return (
+      <div style={{ width: "100%", height: "80%" }}>
             <>
-              <Map records={records} />
-
+            {myaqidata && myaqidata.data?(<Map records={myaqidata.data} />):(<Map records={data.data} />)}
             </>
-          )
-        })}
       </div>
     </>
   );

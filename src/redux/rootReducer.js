@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import SIZE_REDUCER from "./size/size-reducer";
+import LocationReducer from "./size/Location-Reducer";
 const rootreducer = combineReducers({
-  size:SIZE_REDUCER,
+  location:LocationReducer,
 });
 export default rootreducer;

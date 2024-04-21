@@ -1,78 +1,163 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { GetCountrys, GetState, setAqiData } from "../../../redux/size/Location-Action";
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Header() {
-  // Define state variables for country, state, and city
-  const [selectedCountry, setSelectedCountry] = useState('India');
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
+    const notify = () => toast("Something went wrong");
+    const dispatch = useDispatch();
+    const [state, setState] = useState([]);
+    const countrys = useSelector((state) => state.location.country);
+    const username = useSelector((state) => state.location.userdetails); 
+//   console.log(username.displayName,"adasdasdasd")
+   
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedState, setSelectedState] = useState('');
+    const [selectedCity, setSelectedCity] = useState('');
+    const [city, setCity] = useState([]);
+    const [AqiData, setAqidata] = useState(null);
 
-  // Define arrays for countries, states, and cities (dummy data)
-  const countries = ['India'];
-  const states = {
-    India: ['Uttar Pradesh', 'Maharashtra', 'Karnataka'], // States for India
-  };
-  const cities = {
-    'Uttar Pradesh': ['Allahabad', 'Lucknow', 'Kanpur'], // Cities for Uttar Pradesh
-    Maharashtra: ['Mumbai', 'Pune', 'Nagpur'], // Cities for Maharashtra
-    Karnataka: ['Bangalore', 'Mysore', 'Hubli'], // Cities for Karnataka
-  };
+    useEffect(() => {
+        dispatch(GetCountrys());
+    }, []);
 
-  // Event handler for country selection
-  const handleCountryChange = (event) => {
-    const country = event.target.value;
-    setSelectedCountry(country);
-    // Reset state and city selections
-    setSelectedState('');
-    setSelectedCity('');
-  };
+    const handleCountryChange = async (event) => {
+        const country = event.target.value;
+        setSelectedCountry(country);
+        await GetMyState(country);
+        setSelectedState('');
+        setSelectedCity('');
+    };
 
-  // Event handler for state selection
-  const handleStateChange = (event) => {
-    const state = event.target.value;
-    setSelectedState(state);
-    // Reset city selection
-    setSelectedCity('');
-  };
+    const GetMyState = async (country) => {
+        const apiUrl = `http://api.airvisual.com/v2/states?country=${country}&key=a36a5c13-d5b4-4674-bb66-a74b2a2e48d5`;
+        try {
+            const response = await axios.get(apiUrl);
+            if (response.status === 200) {
+                setState(response.data.data)
+            } else {
+            notify()
 
-  // Event handler for city selection
-  const handleCityChange = (event) => {
-    const city = event.target.value;
-    setSelectedCity(city);
-  };
+                throw new Error('Failed to fetch data');
+            }
+        } catch (error) {
+            notify()
 
-  return (
-    <div>
-      <h3>Choose Your Location</h3>
-      {/* Country Header */}
-      <select value={selectedCountry} onChange={handleCountryChange}>
-        {countries.map((country) => (
-          <option key={country} value={country}>
-            {country}
-          </option>
-        ))}
-      </select>
-      {/* State Header */}
-      <select value={selectedState} onChange={handleStateChange}>
-        <option value="">Select State</option>
-        {states[selectedCountry] &&
-          states[selectedCountry].map((state) => (
-            <option key={state} value={state}>
-              {state}
-            </option>
-          ))}
-      </select>
-      {/* City Header */}
-      <select value={selectedCity} onChange={handleCityChange}>
-        <option value="">Select City</option>
-        {cities[selectedState] &&
-          cities[selectedState].map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-      </select>
-    </div>
-  );
+            console.error('Error fetching data:', error.message);
+        }
+    }
+
+    const getCity = async (state) => {
+        const apiUrl = `http://api.airvisual.com/v2/cities?state=${state}&country=${selectedCountry}&key=a36a5c13-d5b4-4674-bb66-a74b2a2e48d5`;
+        try {
+            const response = await axios.get(apiUrl);
+            if (response.status === 200) {
+                setCity(response.data.data)
+            } else {
+            notify()
+
+                throw new Error('Failed to fetch data');
+            }
+        } catch (error) {
+            notify()
+
+            console.error('Error fetching data:', error.message);
+        }
+    }
+
+    const handleStateChange = async (event) => {
+        const state = event.target.value;
+        setSelectedState(state);
+        getCity(state);
+        setSelectedCity('');
+    };
+
+    const handleCityChange = async (event) => {
+        const city = event.target.value;
+        setSelectedCity(city);
+        await getAQI(city);
+    };
+
+    const getAQI = async (city) => {
+        const apiUrl = `http://api.airvisual.com/v2/city?city=${city}&state=${selectedState}&country=${selectedCountry}&key=a36a5c13-d5b4-4674-bb66-a74b2a2e48d5`;
+        try {
+            const response = await axios.get(apiUrl);
+            if (response.status === 200) {
+                setAqidata(response.data.data)
+                dispatch(setAqiData(response.data))
+            } else {
+            notify()
+
+                throw new Error('Failed to fetch data');
+            }
+        } catch (error) {
+            notify()
+            console.error('Error fetching data:', error.message);
+        }
+    }
+
+    return (
+        
+        <div className="container mx-auto py-4">
+            <ToastContainer />
+            {/* <button onClick={notify}>Notify!</button> */}
+            <div className='flex justify-between items-center'>
+            <h3 className="text-xl font-semibold mb-4">Choose Your Location</h3>
+            {/* <h3 className="text-xl font-semibold mb-4">Get Latest 4 days </h3> */}
+            <h3>user name: {username.displayName}</h3>
+            </div>
+            <div className="flex justify-between">
+                {/* Country Dropdown */}
+                <div className="w-1/4">
+                    <label className="block mb-2">Country:</label>
+                    <select value={selectedCountry} onChange={handleCountryChange} className="w-full px-2 py-1 border rounded">
+                        <option value="">Select Country</option>
+                        {countrys.map((country, i) => (
+                            <option key={i} value={country.country}>
+                                {country.country}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                {/* State Dropdown */}
+                <div className="w-1/4">
+                    <label className="block mb-2">State:</label>
+                    <select value={selectedState} onChange={handleStateChange} className="w-full px-2 py-1 border rounded">
+                        <option value="">Select State</option>
+                        {state.map((state, i) => (
+                            <option key={i} value={state.state}>
+                                {state.state}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                {/* City Dropdown */}
+                <div className="w-1/4">
+                    <label className="block mb-2">City:</label>
+                    <select value={selectedCity} onChange={handleCityChange} className="w-full px-2 py-1 border rounded">
+                        <option value="">Select City</option>
+                        {city.map((city, i) => (
+                            <option key={i} value={city.city}>
+                                {city.city}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+            {/* AQI Data */}
+            {/* {AqiData && (
+                <div className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2">AQI Data:</h3>
+                    <div className="border rounded p-4">
+                        <p className="mb-2">AQI: {AqiData.current.pollution.aqius}</p>
+                        <p className="mb-2">Main Pollutant: {AqiData.current.pollution.mainus}</p>
+                        <p>Timestamp: {AqiData.current.pollution.ts}</p>
+                    </div>
+                </div>
+            )} */}
+        </div>
+    );
 }
 
 export default Header;

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import GoogleMapReact from 'google-map-react';
+
 function getColor(aqius) {
     if (aqius >= 0 && aqius <= 50) {
-      
       return 'green';
     } else if (aqius >= 51 && aqius <= 100) {
       return 'yellow';
@@ -13,50 +13,52 @@ function getColor(aqius) {
     } else if (aqius >= 301 && aqius <= 400) {
       return 'purple';
     } else {
-     
-
-      return 'maroon'; // Or handle this case as needed
+      return 'maroon';
     }
-  }
-const AnyReactComponent = ({ text }) => (
-    
-    <div class='myBounceDiv'>
-       {getColor(text.data.current.pollution.aqius)}
-       <div id="marker"  className="pin" style={{backgroundColor:getColor(text.data.current.pollution.aqius)}}>
-  {text.data.current.pollution.aqius}
-</div>
+}
 
-    <div class='pulse'></div>
+const AnyReactComponent = ({ text }) => (
+  <div className='myBounceDiv'>
+    <div id="marker" className="pin" style={{ backgroundColor: getColor(text.current.pollution.aqius) }}>
+      {text.current.pollution.aqius}
     </div>
+    <div className='pulse'></div>
+  </div>
 );
 
 export default function SimpleMap({ records }) {
-    console.log(records, "recordsrecords")
+  const defaultCenter = {
+    lat: parseFloat(records.location.coordinates[1]),
+    lng: parseFloat(records.location.coordinates[0])
+  };
 
-    const defaultCenter = {
-        lat: parseFloat(records.data.location.coordinates[1]),
-        lng: parseFloat(records.data.location.coordinates[0])
-    };
+  // Calculate zoom level based on the radius or any other relevant data
+  const calculateZoomLevel = () => {
+    // Example calculation: Assuming records have a radius property
+    const radius = parseFloat(records.radius);
+    if (radius <= 10) return 15; // Zoom level for small radius
+    else if (radius <= 50) return 12; // Zoom level for medium radius
+    else return 10; // Default zoom level
+  };
 
-    const defaultProps = {
-        center: defaultCenter,
-        zoom: 11
-    };
+  const defaultProps = {
+    center: defaultCenter,
+    zoom: calculateZoomLevel() // Calculate the zoom level dynamically
+  };
 
-    return (
-        // Important! Always set the container height explicitly
-        <div style={{ height: '100vh', width: '100%' }}>
-            <GoogleMapReact
-                bootstrapURLKeys={{ key: "AIzaSyBaGHp3hW_TgoyCcbkuUogkIQqzolYdpmc" }} // Replace "YOUR_API_KEY" with your actual Google Maps API key
-                defaultCenter={defaultCenter}
-                defaultZoom={defaultProps.zoom}
-            >
-                <AnyReactComponent
-                    lat={defaultCenter.lat}
-                    lng={defaultCenter.lng}
-                    text={records}
-                />
-            </GoogleMapReact>
-        </div>
-    );
+  return (
+    <div style={{ height: '100vh', width: '100%' }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: "AIzaSyBaGHp3hW_TgoyCcbkuUogkIQqzolYdpmc" }}
+        defaultCenter={defaultCenter}
+        defaultZoom={defaultProps.zoom}
+      >
+        <AnyReactComponent
+          lat={defaultCenter.lat}
+          lng={defaultCenter.lng}
+          text={records}
+        />
+      </GoogleMapReact>
+    </div>
+  );
 }
