@@ -100,63 +100,58 @@ function Header() {
     return (
         
         <div className="container mx-auto py-4">
-            <ToastContainer />
-            {/* <button onClick={notify}>Notify!</button> */}
-            <div className='flex justify-between items-center'>
-            <h3 className="text-xl font-semibold mb-4">Choose Your Location</h3>
-            {/* <h3 className="text-xl font-semibold mb-4">Get Latest 4 days </h3> */}
-            <h3>user name: {username.displayName}</h3>
-            </div>
-            <div className="flex justify-between">
-                {/* Country Dropdown */}
-                <div className="w-1/4">
-                    <label className="block mb-2">Country:</label>
-                    <select value={selectedCountry} onChange={handleCountryChange} className="w-full px-2 py-1 border rounded">
-                        <option value="">Select Country</option>
-                        {countrys.map((country, i) => (
-                            <option key={i} value={country.country}>
-                                {country.country}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                {/* State Dropdown */}
-                <div className="w-1/4">
-                    <label className="block mb-2">State:</label>
-                    <select value={selectedState} onChange={handleStateChange} className="w-full px-2 py-1 border rounded">
-                        <option value="">Select State</option>
-                        {state.map((state, i) => (
-                            <option key={i} value={state.state}>
-                                {state.state}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                {/* City Dropdown */}
-                <div className="w-1/4">
-                    <label className="block mb-2">City:</label>
-                    <select value={selectedCity} onChange={handleCityChange} className="w-full px-2 py-1 border rounded">
-                        <option value="">Select City</option>
-                        {city.map((city, i) => (
-                            <option key={i} value={city.city}>
-                                {city.city}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            {/* AQI Data */}
-            {/* {AqiData && (
-                <div className="mt-4">
-                    <h3 className="text-lg font-semibold mb-2">AQI Data:</h3>
-                    <div className="border rounded p-4">
-                        <p className="mb-2">AQI: {AqiData.current.pollution.aqius}</p>
-                        <p className="mb-2">Main Pollutant: {AqiData.current.pollution.mainus}</p>
-                        <p>Timestamp: {AqiData.current.pollution.ts}</p>
-                    </div>
-                </div>
-            )} */}
+        <ToastContainer />
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-semibold">Choose Your Location</h3>
+          <h3>User Name: {username.displayName}</h3>
         </div>
+        <div className="flex flex-wrap justify-between mb-4">
+          <div className="w-full sm:w-1/3 mb-4 sm:mb-0">
+            <label className="block mb-2">Country:</label>
+            <select value={selectedCountry} onChange={handleCountryChange} className="w-full px-2 py-1 border rounded">
+              <option value="">Select Country</option>
+              {countrys.map((country, index) => (
+                <option key={index} value={country.country}>
+                  {country.country}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="w-full sm:w-1/3 mb-4 sm:mb-0">
+            <label className="block mb-2">State:</label>
+            <select value={selectedState} onChange={handleStateChange} className="w-full px-2 py-1 border rounded">
+              <option value="">Select State</option>
+              {state.map((state, index) => (
+                <option key={index} value={state.state}>
+                  {state.state}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="w-full sm:w-1/3">
+            <label className="block mb-2">City:</label>
+            <select value={selectedCity} onChange={handleCityChange} className="w-full px-2 py-1 border rounded">
+              <option value="">Select City</option>
+              {city.map((city, index) => (
+                <option key={index} value={city.city}>
+                  {city.city}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        {/* AQI Data */}
+        {/* {AqiData && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold mb-2">AQI Data:</h3>
+            <div className="border rounded p-4">
+              <p className="mb-2">AQI: {AqiData.current.pollution.aqius}</p>
+              <p className="mb-2">Main Pollutant: {AqiData.current.pollution.mainus}</p>
+              <p>Timestamp: {AqiData.current.pollution.ts}</p>
+            </div>
+          </div>
+        )} */}
+      </div>
     );
 }
 
