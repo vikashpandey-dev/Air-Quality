@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import GoogleMapReact from 'google-map-react';
 
 function getColor(aqius) {
@@ -25,37 +25,41 @@ const AnyReactComponent = ({ text }) => (
     <div className='pulse'></div>
   </div>
 );
+
 export default function SimpleMap({ records }) {
-  const APIKEY='AIzaSyBaGHp3hW_TgoyCcbkuUogkIQqzolYdpmc'
-  const defaultCenter = {
+  const [center, setCenter] = useState({
     lat: parseFloat(records.location.coordinates[1]),
     lng: parseFloat(records.location.coordinates[0])
-  };
+  });
+  const [zoom, setZoom] = useState(5); // Initial zoom level
 
+  useEffect(() => {
+    const calculateZoomLevel = () => {
+      const radius = parseFloat(records.radius);
+      if (radius <= 10) return 15;
+      else if (radius <= 50) return 12;
+      else return 10;
+    };
 
-  const calculateZoomLevel = () => {
-   
-    const radius = parseFloat(records.radius);
-    if (radius <= 10) return 15; 
-    else if (radius <= 50) return 12; //
-    else return 10; //
-  };
+    setZoom(calculateZoomLevel());
+    setCenter({
+      lat: parseFloat(records.location.coordinates[1]),
+      lng: parseFloat(records.location.coordinates[0])
+    });
+  }, [records]); // Update zoom level and center when records change
 
-  const defaultProps = {
-    center: defaultCenter,
-    zoom: calculateZoomLevel() 
-  };
+  const APIKEY='AIzaSyBaGHp3hW_TgoyCcbkuUogkIQqzolYdpmc';
 
   return (
     <div style={{ height: '100vh', width: '100%' }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: APIKEY }}
-        defaultCenter={defaultCenter}
-        defaultZoom={defaultProps.zoom}
+        center={center}
+        zoom={zoom}
       >
         <AnyReactComponent
-          lat={defaultCenter.lat}
-          lng={defaultCenter.lng}
+          lat={center.lat}
+          lng={center.lng}
           text={records}
         />
       </GoogleMapReact>

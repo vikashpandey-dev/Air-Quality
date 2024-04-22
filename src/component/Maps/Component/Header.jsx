@@ -104,11 +104,11 @@ const hanloaddata=async()=>{
         
         <div className="container mx-auto py-4">
         <ToastContainer />
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-2">
           <h3 className="text-xl font-semibold" onClick={hanloaddata}>Choose Your Location</h3>
           <h3>User Name: {username.displayName}</h3>
         </div>
-        <div className="flex flex-wrap justify-between mb-4">
+        <div className="flex flex-wrap justify-between mb-2">
           <div className="w-full sm:w-1/3 mb-4 sm:mb-0">
             <label className="block mb-2">Country:</label>
             <select value={selectedCountry} onChange={handleCountryChange} className="w-full px-2 py-1 border rounded">
@@ -145,7 +145,7 @@ const hanloaddata=async()=>{
         </div>
         {/* AQI Data */}
         {/* {AqiData && (
-          <div className="mt-4">
+          <div className="mt-1">
             <h3 className="text-lg font-semibold mb-2">AQI Data:</h3>
             <div className="border rounded p-4">
               <p className="mb-2">AQI: {AqiData.current.pollution.aqius}</p>
