@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Index from './component/Index';
+import Main from './component/Main';
 import Signup from './component/Auth/Signup/Signup';
 import Login from './component/Auth/Login/Login';
 import { useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={isLoggedIn ? <Index /> : <Login />} />
+        <Route path="/" element={isLoggedIn ? <Main /> : <Login />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />
       </Routes>
