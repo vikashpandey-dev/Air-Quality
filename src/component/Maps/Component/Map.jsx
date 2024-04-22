@@ -25,31 +25,31 @@ const AnyReactComponent = ({ text }) => (
     <div className='pulse'></div>
   </div>
 );
-
 export default function SimpleMap({ records }) {
+  const APIKEY='AIzaSyBaGHp3hW_TgoyCcbkuUogkIQqzolYdpmc'
   const defaultCenter = {
     lat: parseFloat(records.location.coordinates[1]),
     lng: parseFloat(records.location.coordinates[0])
   };
 
-  // Calculate zoom level based on the radius or any other relevant data
+
   const calculateZoomLevel = () => {
-    // Example calculation: Assuming records have a radius property
+   
     const radius = parseFloat(records.radius);
-    if (radius <= 10) return 15; // Zoom level for small radius
-    else if (radius <= 50) return 12; // Zoom level for medium radius
-    else return 10; // Default zoom level
+    if (radius <= 10) return 15; 
+    else if (radius <= 50) return 12; //
+    else return 10; //
   };
 
   const defaultProps = {
     center: defaultCenter,
-    zoom: calculateZoomLevel() // Calculate the zoom level dynamically
+    zoom: calculateZoomLevel() 
   };
 
   return (
     <div style={{ height: '100vh', width: '100%' }}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyBaGHp3hW_TgoyCcbkuUogkIQqzolYdpmc" }}
+        bootstrapURLKeys={{ key: APIKEY }}
         defaultCenter={defaultCenter}
         defaultZoom={defaultProps.zoom}
       >

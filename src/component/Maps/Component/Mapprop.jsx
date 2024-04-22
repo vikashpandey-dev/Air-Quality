@@ -6,8 +6,6 @@ function Mapprop() {
   const [aqidata,setaqidata]=useState([])
   const myaqidata = useSelector((state) => state.location.AqiData);
 
-console.log(aqidata,"myaqidatamyaqidata")
-
   const latitude = 25.44478;
   const longitude = 81.84322;
   let data = {
